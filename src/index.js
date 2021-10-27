@@ -3,7 +3,7 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const apiRouter = require('./controllers/api.controller');
-const testRouter = require('./controllers/test.controller');
+//const testRouter = require('./controllers/test.controller');
 const { notFound, errorHandler, asyncHandler } = require('./middlewares/middlewares');
 const { initDB } = require('./dataBase');
 
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/todos', apiRouter);
-app.use('/test', testRouter);
+//app.use('/test', testRouter);
 
 app.use(notFound);
 app.use(errorHandler);
