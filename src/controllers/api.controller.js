@@ -8,6 +8,7 @@ const router = Router();
 function initRoutes() {
     router.get('/', asyncHandler(getToDos));
     router.get('/:id', asyncHandler(getToDoById));
+    router.post('/', asyncHandler(createToDo));
 }
 
 async function getToDos(req, res, next) {
@@ -26,6 +27,13 @@ async function getToDoById(req, res, next) {
     res.status(200).json(todo);
 }
 
+
+async function createToDo(req, res, next) {
+    const {title, isCompleted} = req.body
+    console.log(title, isCompleted)
+    
+    res.status(200).json("ok");
+}
 initRoutes();
 
 module.exports = router;
