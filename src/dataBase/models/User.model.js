@@ -25,11 +25,7 @@ User.init(
         name: {
             type: Sequelize.STRING,
             defaultValue: 'Name',
-        },
-        isCompleted: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false,
-        },
+        }
     },
     { sequelize: sequelize, underscored: true, modelName: 'user' }
 );

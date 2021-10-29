@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const { sequelize } = require('..');
 const Token = require('./Token.model');
+const User = require('./User.model');
 
 class ToDo extends Sequelize.Model {}
 
@@ -19,14 +20,29 @@ ToDo.init(
             type: Sequelize.STRING,
             defaultValue: 'Title',
         },
-        isCompleted: {
+        description: {
+            type: Sequelize.STRING,
+            defaultValue: 'Description',
+        },
+        isDone: {
             type: Sequelize.BOOLEAN,
             defaultValue: false,
         },
+        isFavourite: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false,
+        },
+        priority: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0,
+        },
     },
-    { sequelize: sequelize, underscored: true, modelName: 'todo' }
+    { sequelize: sequelize, underscored: true, modelName: 'todos' }
 );
 
-ToDo.hasOne(Token)
+User.hasMany(ToDo)
+User.hasMany(Token)
+ToDo.belongsTo(User, {foreignKey: "userId"})
+Token.belongsTo(Token, {foreignKey: 'userId'})
 
 module.exports = ToDo
