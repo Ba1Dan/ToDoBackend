@@ -30,13 +30,13 @@ const errorHandler = (err, _req, res, _next) => {
 const requireToken = async (req, res, next) => {
     const token = req.headers.authorization
     if(!token) {
-        throw new ErrorResponse("нет токена", 401) 
+        throw new ErrorResponse("Token don't sent", 401) 
     }
 
     const tokenFromDB = await Token.findOne({where: {value: token}})
 
     if(!tokenFromDB) {
-        throw new ErrorResponse("Неверный токен", 400) 
+        throw new ErrorResponse("Wrong token", 400) 
     }
 
     req.userId = tokenFromDB.userId

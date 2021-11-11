@@ -18,13 +18,17 @@ async function createToDo(req, res) {
     const userId = req.userId
     const {title, description, isDone, isFavourite, priority} = req.body
     
+    //Создание todo
     const todo = await ToDo.create({title, userId, description, isDone, isFavourite, priority})
     console.log(todo)
-     res.status(200).json({message: "ok"});
+    
+    res.status(200).json({message: "ok"});
 }
 
 async function getToDos(req, res) {
     const userId = req.userId
+    
+    //Получение всех todo пользователя
     const todos = await ToDo.findAll({where: {userId: userId}});
 
     res.status(200).json({ todos });
@@ -32,29 +36,50 @@ async function getToDos(req, res) {
 
 async function getToDoById(req, res) {
     const userId = req.userId
-    const todo = await ToDo.findByPk(req.params.id);
+    const todo = await ToDo.findOne({ where: {
+        id: req.params.id,
+        userId: userId
+    }})
 
     if (!todo) {
         throw new ErrorResponse('No todo found', 404);
     }
 
-    res.status(200).json(todo);
+    res.status(200).json({todo});
 }
 
 async function updateToDoById(req, res) {
     const userId = req.userId
     const {title, description, isDone, isFavourite, priority} = req.body
-    const todo = await ToDo.update({
-        title, userId, description, isDone, isFavourite, priority
-    }, {
-        where: {
-            id: req.params.id,
-            userId: userId
-        }
-    })
+
+    const todo = await ToDo.findOne({ where: {
+        id: req.params.id,
+        userId: userId
+    }})
     if (!todo) {
         throw new ErrorResponse('Todo not found', 404);
     }
+    console.log('todo ' + todo)
+    if(title) {
+        await todo.update({title})
+    }
+
+    if(description) {
+        todo.update({description})
+    }
+
+    if(isDone) {
+        await todo.update({isDone})
+    }
+
+    if(isFavourite) {
+        await todo.update({isFavourite})
+    }
+
+    if(priority) {
+        await todo.update({priority})
+    }
+   
     res.status(200).json({message: "ok"});
 }
 
@@ -66,6 +91,9 @@ async function deleteToDoById(req, res, next) {
             userId: userId
         }
     })
+    if(!todo) {
+        throw new ErrorResponse('Todo not found', 404);
+    }
     res.status(200).json({message: "ok"});
 }
 
