@@ -8,13 +8,12 @@ class ToDo extends Sequelize.Model {}
 ToDo.init(
     {
         id: {
-            type: Sequelize.DataTypes.UUID,
+            type: Sequelize.INTEGER,
             primaryKey: true,
-            defaultValue: Sequelize.DataTypes.UUIDV4
+            autoIncrement: true,
         },
         userId: {
-            type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.DataTypes.UUIDV4
+            type: Sequelize.INTEGER,
         },
         title: {
             type: Sequelize.STRING,

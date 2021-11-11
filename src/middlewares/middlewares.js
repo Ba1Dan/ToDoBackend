@@ -1,4 +1,5 @@
 const ErrorResponse = require("../classes/error-response");
+const Token = require("../dataBase/models/Token.model");
 
 const asyncHandler = (fn) => (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(next);
@@ -26,9 +27,26 @@ const errorHandler = (err, _req, res, _next) => {
     });
 };
 
+const requireToken = async (req, res, next) => {
+    const token = req.headers.authorization
+    if(!token) {
+        throw new ErrorResponse("нет токена", 401) 
+    }
+
+    const tokenFromDB = await Token.findOne({where: {value: token}})
+
+    if(!tokenFromDB) {
+        throw new ErrorResponse("Неверный токен", 400) 
+    }
+
+    req.userId = tokenFromDB.userId
+    
+    next()
+}
 module.exports = {
     asyncHandler,
     syncHandler,
     notFound,
     errorHandler,
+    requireToken
 };

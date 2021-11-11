@@ -7,13 +7,12 @@ class Token extends Sequelize.Model {}
 Token.init(
     {
         id: {
-            type: Sequelize.DataTypes.UUID,
+            type: Sequelize.INTEGER,
             primaryKey: true,
-            defaultValue: Sequelize.DataTypes.UUIDV4
+            autoIncrement: true
         },
         userId: {
-            type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.DataTypes.UUIDV4
+            type: Sequelize.INTEGER,
         },
         value: {
             type: Sequelize.STRING,
