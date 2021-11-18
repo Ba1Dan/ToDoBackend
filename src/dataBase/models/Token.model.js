@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 const { sequelize } = require('..');
-const User = require('./User.model');
 
 class Token extends Sequelize.Model {}
 
@@ -10,9 +9,6 @@ Token.init(
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
-        },
-        userId: {
-            type: Sequelize.INTEGER,
         },
         value: {
             type: Sequelize.STRING,

@@ -22,7 +22,7 @@ async function createToDo(req, res) {
     const todo = await ToDo.create({title, userId, description, isDone, isFavourite, priority})
     console.log(todo)
     
-    res.status(200).json({message: "ok"});
+    res.status(200).json(todo);
 }
 
 async function getToDos(req, res) {
@@ -31,7 +31,7 @@ async function getToDos(req, res) {
     //Получение всех todo пользователя
     const todos = await ToDo.findAll({where: {userId: userId}});
 
-    res.status(200).json({ todos });
+    res.json({todos});
 }
 
 async function getToDoById(req, res) {
@@ -45,7 +45,7 @@ async function getToDoById(req, res) {
         throw new ErrorResponse('No todo found', 404);
     }
 
-    res.status(200).json({todo});
+    res.json(todo);
 }
 
 async function updateToDoById(req, res) {
@@ -54,7 +54,7 @@ async function updateToDoById(req, res) {
 
     const todo = await ToDo.findOne({ where: {
         id: req.params.id,
-        userId: userId
+        userId
     }})
     if (!todo) {
         throw new ErrorResponse('Todo not found', 404);
@@ -65,7 +65,7 @@ async function updateToDoById(req, res) {
     }
 
     if(description) {
-        todo.update({description})
+        await todo.update({description})
     }
 
     if(isDone) {
@@ -80,29 +80,26 @@ async function updateToDoById(req, res) {
         await todo.update({priority})
     }
    
-    res.status(200).json({message: "ok"});
+    res.status(200).json(todo);
 }
 
 async function deleteToDoById(req, res, next) {
     const userId = req.userId
-    const todo = await ToDo.destroy({
+    await ToDo.destroy({
         where: {
             id: req.params.id,
-            userId: userId
+            userId
         }
     })
-    if(!todo) {
-        throw new ErrorResponse('Todo not found', 404);
-    }
     res.status(200).json({message: "ok"});
 }
 
 async function deleteToDos(req, res, next) {
     const userId = req.userId
-    const todo = await ToDo.destroy({
-        truncate: true,
+    await ToDo.destroy({
+        //truncate: true, Truncate all instances of the model.
         where: {
-            userId: userId
+            userId
         }
     })
     res.status(200).json({message: "ok"});

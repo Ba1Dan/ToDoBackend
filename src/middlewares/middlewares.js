@@ -28,7 +28,7 @@ const errorHandler = (err, _req, res, _next) => {
 };
 
 const requireToken = async (req, res, next) => {
-    const token = req.headers.authorization
+    const token = req.headers.authorization //по-другому
     if(!token) {
         throw new ErrorResponse("Token don't sent", 401) 
     }
